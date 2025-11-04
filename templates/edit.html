@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editar Registro - EL TRACKR</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>✏️ Editar Registro</h1>
+    <form method="POST">
+      <input type="text" name="nombre" value="{{ registro.nombre }}" required>
+      <input type="email" name="correo" value="{{ registro.correo }}" required>
+      <input type="number" step="0.01" name="energia" value="{{ registro.energia }}">
+      <input type="number" step="0.01" name="agua" value="{{ registro.agua }}">
+      <input type="number" step="0.01" name="transporte" value="{{ registro.transporte }}">
+      <button type="submit">Actualizar</button>
+    </form>
+    <a href="/">⬅ Volver</a>
+  </div>
+</body>
+</html>

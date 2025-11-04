@@ -1,0 +1,64 @@
+body {
+  background-color: #f2f5ec;
+  font-family: 'Poppins', sans-serif;
+  color: #2b3a2e;
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #4a7c59;
+  margin-bottom: 20px;
+}
+
+input, button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #c3d6c1;
+}
+
+button {
+  background-color: #6fbf73;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #589e98;
+}
+
+a {
+  text-decoration: none;
+  color: #527c4a;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  transform: scale(1.02);
+  transition: 0.2s;
+}
+
+.del {
+  color: #b84a4a;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registrar Consumo - EL TRACKR</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 Nuevo Registro de Huella</h1>
+    <form method="POST">
+      <input type="text" name="nombre" placeholder="Nombre" required>
+      <input type="email" name="correo" placeholder="Correo" required>
+      <input type="number" step="0.01" name="energia" placeholder="Energía (kWh)">
+      <input type="number" step="0.01" name="agua" placeholder="Agua (litros)">
+      <input type="number" step="0.01" name="transporte" placeholder="Transporte (km)">
+      <button type="submit">Guardar</button>
+    </form>
+    <a href="/">⬅ Volver</a>
+  </div>
+</body>
+</html>

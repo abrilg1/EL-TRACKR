@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EL TRACKR 🌎</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 Monitoreo de Huella de Carbono</h1>
+    <a href="/create" class="btn">➕ Nuevo Registro</a>
+    <div class="grid">
+      {% for r in registros %}
+      <div class="card">
+        <h2>{{ r.nombre }}</h2>
+        <p>Correo: {{ r.correo }}</p>
+        <p>CO₂ Total: {{ r.co2_total }} tCO₂</p>
+        <p>💡 {{ r.recomendaciones }}</p>
+        <a href="/edit/{{ r._id }}">Editar</a> |
+        <a href="/delete/{{ r._id }}" class="del">Eliminar</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
