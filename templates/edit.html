@@ -1,21 +1,97 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Editar Registro - EL TRACKR</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <div class="container">
-    <h1>✏️ Editar Registro</h1>
-    <form method="POST">
-      <input type="text" name="nombre" value="{{ registro.nombre }}" required>
-      <input type="email" name="correo" value="{{ registro.correo }}" required>
-      <input type="number" step="0.01" name="energia" value="{{ registro.energia }}">
-      <input type="number" step="0.01" name="agua" value="{{ registro.agua }}">
-      <input type="number" step="0.01" name="transporte" value="{{ registro.transporte }}">
-      <button type="submit">Actualizar</button>
-    </form>
-    <a href="/">⬅ Volver</a>
-  </div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Editar Registro - EL TRACKR{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark text-center py-3">
+                <h3 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>
+                    Editar Registro de Huella ✏️
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('edit', id=registro._id) }}">
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label fw-bold text-success">
+                            <i class="fas fa-user me-1"></i>Nombre Completo *
+                        </label>
+                        <input type="text" class="form-control form-control-lg" 
+                               id="nombre" name="nombre" 
+                               value="{{ registro.nombre }}" required>
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="mb-3">
+                        <label for="correo" class="form-label fw-bold text-success">
+                            <i class="fas fa-envelope me-1"></i>Correo Electrónico *
+                        </label>
+                        <input type="email" class="form-control form-control-lg" 
+                               id="correo" name="correo" 
+                               value="{{ registro.correo }}" required>
+                    </div>
+
+                    <div class="row">
+                        <!-- Energía -->
+                        <div class="col-md-4 mb-3">
+                            <label for="energia" class="form-label fw-bold text-success">
+                                <i class="fas fa-bolt me-1"></i>Energía (kWh) *
+                            </label>
+                            <input type="number" step="0.1" min="0" class="form-control" 
+                                   id="energia" name="energia" 
+                                   value="{{ registro.energia }}" required>
+                            <div class="form-text">Consumo mensual</div>
+                        </div>
+
+                        <!-- Agua -->
+                        <div class="col-md-4 mb-3">
+                            <label for="agua" class="form-label fw-bold text-success">
+                                <i class="fas fa-tint me-1"></i>Agua (Litros) *
+                            </label>
+                            <input type="number" step="0.1" min="0" class="form-control" 
+                                   id="agua" name="agua" 
+                                   value="{{ registro.agua }}" required>
+                            <div class="form-text">Consumo mensual</div>
+                        </div>
+
+                        <!-- Transporte -->
+                        <div class="col-md-4 mb-3">
+                            <label for="transporte" class="form-label fw-bold text-success">
+                                <i class="fas fa-car me-1"></i>Transporte (km) *
+                            </label>
+                            <input type="number" step="0.1" min="0" class="form-control" 
+                                   id="transporte" name="transporte" 
+                                   value="{{ registro.transporte }}" required>
+                            <div class="form-text">Km mensuales</div>
+                        </div>
+                    </div>
+
+                    <!-- Información actual -->
+                    <div class="alert alert-secondary mt-3">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-chart-bar me-2"></i>Datos Actuales
+                        </h6>
+                        <small class="mb-0">
+                            <strong>Huella actual:</strong> {{ registro.co2_total }} kg CO₂<br>
+                            <strong>Fecha creación:</strong> {{ registro.fecha_creacion.strftime('%d/%m/%Y') if registro.fecha_creacion else 'N/A' }}
+                        </small>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-1"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-save me-2"></i>Actualizar Registro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
