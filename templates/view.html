@@ -1,11 +1,73 @@
-
 {% extends "base.html" %}
-{% block title %}Detalle{% endblock %}
+{% block title %}Detalle del Registro - EL TRACKR{% endblock %}
 {% block content %}
-  <h2>Detalle</h2>
-  <ul class="list-group">
-    <li class="list-group-item"><strong>Campo 1:</strong> {{ dato.campo1 }}</li>
-    <li class="list-group-item"><strong>Campo 2:</strong> {{ dato.campo2 }}</li>
-  </ul>
-  <a class="btn btn-secondary mt-3" href="{{ url_for('index') }}">Volver</a>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 fade-in-up">
+                <div class="card-header bg-info text-white text-center py-3">
+                    <h3 class="mb-0"><i class="fas fa-eye me-2"></i>Detalle del Registro</h3>
+                </div>
+                <div class="card-body p-4">
+                    {% if registro %}
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <div class="display-4 fw-bold text-success">{{ registro.co2_total }}</div>
+                            <div class="h5 text-muted">kg CO₂ Total</div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">👤 Nombre:</span>
+                            <span>{{ registro.nombre }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">📧 Correo:</span>
+                            <span>{{ registro.correo }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">💡 Energía:</span>
+                            <span>{{ registro.energia }} kWh</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">💧 Agua:</span>
+                            <span>{{ registro.agua }} litros</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">🚗 Transporte:</span>
+                            <span>{{ registro.transporte }} km</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">📅 Fecha Creación:</span>
+                            <span>{{ registro.fecha_creacion.strftime('%d/%m/%Y %H:%M') }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5 class="text-success mb-3">🌿 Recomendaciones:</h5>
+                        <div class="alert alert-success">
+                            <ul class="mb-0">
+                                {% for recomendacion in registro.recomendaciones %}
+                                <li>{{ recomendacion }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning text-center">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Registro no encontrado
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                        <a href="{{ url_for('index') }}" class="btn btn-eco">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
