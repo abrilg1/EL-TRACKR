@@ -1,25 +1,178 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>EL TRACKR 🌎</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <div class="container">
-    <h1>🌿 Monitoreo de Huella de Carbono</h1>
-    <a href="/create" class="btn">➕ Nuevo Registro</a>
-    <div class="grid">
-      {% for r in registros %}
-      <div class="card">
-        <h2>{{ r.nombre }}</h2>
-        <p>Correo: {{ r.correo }}</p>
-        <p>CO₂ Total: {{ r.co2_total }} tCO₂</p>
-        <p>💡 {{ r.recomendaciones }}</p>
-        <a href="/edit/{{ r._id }}">Editar</a> |
-        <a href="/delete/{{ r._id }}" class="del">Eliminar</a>
-      </div>
-      {% endfor %}
+{% extends "base.html" %}
+
+{% block title %}Inicio - EL TRACKR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 text-center mb-5">
+        <h1 class="display-4 text-success fw-bold">
+            <i class="fas fa-leaf me-2"></i>EL TRACKR
+        </h1>
+        <p class="lead text-muted">Monitor de Huella de Carbono</p>
     </div>
-  </div>
-</body>
-</html>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-3"></i>
+                <h3 class="card-title">{{ total_registros }}</h3>
+                <p class="card-text">Total Registros</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-cloud fa-2x mb-3"></i>
+                <h3 class="card-title">{{ promedio_co2 }} kg</h3>
+                <p class="card-text">Promedio CO₂</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-trophy fa-2x mb-3"></i>
+                <h3 class="card-title">
+                    {% if mejor_registro %}
+                        {{ mejor_registro.co2_total }} kg
+                    {% else %}
+                        -
+                    {% endif %}
+                </h3>
+                <p class="card-text">Mejor Huella</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-earth-americas fa-2x mb-3"></i>
+                <h3 class="card-title">{{ total_co2 }} kg</h3>
+                <p class="card-text">CO₂ Total</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Panel de información -->
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-earth-americas fa-3x text-success mb-3"></i>
+                <h3>Monitorea tu Huella</h3>
+                <p class="text-muted">
+                    Calcula tus emisiones y obtén recomendaciones personalizadas para reducirlas.
+                </p>
+                <a href="{{ url_for('create') }}" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus me-2"></i>Nuevo Registro
+                </a>
+            </div>
+        </div>
+
+        <!-- Consejos -->
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2 text-warning"></i>¿Cómo reducir tu huella?</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Usa transporte público o bicicleta</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Reduce el consumo energético</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Ahorra agua</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Recicla y reutiliza</li>
+                    <li class="mb-0"><i class="fas fa-check text-success me-2"></i>Planta árboles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de registros -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Registros de Huella de Carbono
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if registros %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Energía</th>
+                                    <th>Agua</th>
+                                    <th>Transporte</th>
+                                    <th>CO₂ Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registro in registros %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ registro.nombre }}</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            {% if registro.co2_total < 300 %}
+                                                <span class="badge bg-success">Baja</span>
+                                            {% elif registro.co2_total < 700 %}
+                                                <span class="badge bg-warning">Media</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Alta</span>
+                                            {% endif %}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small>{{ registro.correo }}</small>
+                                    </td>
+                                    <td>{{ registro.energia }} kWh</td>
+                                    <td>{{ registro.agua }} L</td>
+                                    <td>{{ registro.transporte }} km</td>
+                                    <td>
+                                        <strong class="text-{{ 'success' if registro.co2_total < 300 else 'warning' if registro.co2_total < 700 else 'danger' }}">
+                                            {{ registro.co2_total }} kg
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('edit', id=registro._id) }}" 
+                                               class="btn btn-outline-warning"
+                                               title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ url_for('delete', id=registro._id) }}" 
+                                               class="btn btn-outline-danger"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Estás seguro de eliminar este registro?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No hay registros aún</h4>
+                        <p class="text-muted mb-4">Crea tu primer registro para comenzar a monitorear tu huella de carbono</p>
+                        <a href="{{ url_for('create') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-plus me-2"></i>Crear Primer Registro
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
